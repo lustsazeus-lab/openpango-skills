@@ -38,6 +38,7 @@ Agent needs GPT-4 → Pool finds cheapest GPT-4 miner → Task executes → Mine
 - **Encrypted Keys**: API keys are encrypted at rest and never exposed to renters.
 - **Escrow**: Funds are locked before execution and released on success (uses PaymentRouter).
 - **Model Matching**: Renters can request specific models (gpt-4, claude-3, llama-3) or just "cheapest".
+- **Provider Adapters**: Built-in OpenAI / Anthropic / Google / Ollama adapters with retries + timeout guards.
 
 ## Usage
 

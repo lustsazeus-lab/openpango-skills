@@ -1,10 +1,13 @@
-import unittest
-import tempfile
 import os
+import sqlite3
 import sys
+import tempfile
+import unittest
+from unittest.mock import patch
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 
+from skills.mining.adapters import AdapterExecutionError
 from skills.mining.mining_pool import MiningPool
 
 
@@ -14,9 +17,17 @@ class TestMiningPool(unittest.TestCase):
         self.db_file = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
         self.db_path = self.db_file.name
         self.db_file.close()
+
+        self.execute_patch = patch(
+            "skills.mining.mining_pool.execute_inference",
+            return_value="mocked adapter response",
+        )
+        self.mock_execute = self.execute_patch.start()
+
         self.pool = MiningPool(db_path=self.db_path)
 
     def tearDown(self):
+        self.execute_patch.stop()
         os.unlink(self.db_path)
 
     # ─── Registration ────────────────────────────────────────
@@ -67,6 +78,7 @@ class TestMiningPool(unittest.TestCase):
         self.assertEqual(result["status"], "completed")
         self.assertEqual(result["cost"], 0.03)
         self.assertIn("response", result)
+        self.assertEqual(result["provider"], "openai")
 
     def test_submit_task_no_miner(self):
         result = self.pool.submit_task(prompt="Hello", model="nonexistent")
@@ -75,14 +87,31 @@ class TestMiningPool(unittest.TestCase):
     def test_escrow_released_on_success(self):
         self.pool.register_miner("Worker", "gpt-4", "sk-1", 0.05, miner_id="miner_test1")
         result = self.pool.submit_task(prompt="Test", model="gpt-4")
-        
-        # Check escrow was released
-        import sqlite3
+
         with sqlite3.connect(self.db_path) as conn:
             escrow = conn.execute(
                 "SELECT status FROM escrow WHERE task_id = ?", (result["task_id"],)
             ).fetchone()
         self.assertEqual(escrow[0], "released")
+
+    def test_escrow_refunded_on_failure(self):
+        self.mock_execute.side_effect = AdapterExecutionError("provider failed", retryable=False)
+        self.pool.register_miner("Worker", "gpt-4", "sk-1", 0.05, miner_id="miner_refund")
+
+        result = self.pool.submit_task(prompt="Test", model="gpt-4")
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("error", result)
+
+        with sqlite3.connect(self.db_path) as conn:
+            escrow = conn.execute(
+                "SELECT status FROM escrow WHERE task_id = ?", (result["task_id"],)
+            ).fetchone()
+            earned = conn.execute(
+                "SELECT total_earned FROM miners WHERE miner_id = ?", ("miner_refund",)
+            ).fetchone()[0]
+
+        self.assertEqual(escrow[0], "refunded")
+        self.assertEqual(earned, 0.0)
 
     # ─── Earnings & Trust ────────────────────────────────────
 

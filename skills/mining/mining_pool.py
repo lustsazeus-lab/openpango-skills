@@ -19,6 +19,8 @@ from typing import Dict, List, Optional, Any
 from datetime import datetime, timezone
 from base64 import b64encode, b64decode
 
+from skills.mining.adapters import AdapterExecutionError, execute_inference, infer_provider
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(name)s] %(levelname)s: %(message)s')
 logger = logging.getLogger("MiningPool")
 
@@ -237,7 +239,7 @@ class MiningPool:
         
         1. Find the best miner
         2. Lock funds in escrow
-        3. Execute the task (simulated in v1)
+        3. Execute the task via provider adapters
         4. Release escrow to miner
         5. Update trust scores
         """
@@ -267,36 +269,73 @@ class MiningPool:
 
         logger.info(f"Task {task_id} → Miner {miner['name']} @ ${cost}/req (escrow locked)")
 
-        # Step 3: Execute (simulated — in production this calls the miner's API key)
+        # Step 3: Execute via provider adapter
         start_ms = time.time() * 1000
-        simulated_response = f"[Miner {miner['name']}] Processed: {prompt[:50]}... (simulated)"
-        response_ms = (time.time() * 1000) - start_ms
-        success = True
+        provider = infer_provider(miner.get("model"))
+        api_key = _deobfuscate_key(miner.get("api_key_encrypted", ""))
 
-        # Step 4: Release escrow & credit miner
+        success = False
+        response_text = ""
+        error_message = None
+
+        try:
+            response_text = execute_inference(
+                provider=provider,
+                prompt=prompt,
+                model=miner.get("model"),
+                api_key=api_key,
+                timeout=30.0,
+                max_retries=2,
+            )
+            success = True
+        except AdapterExecutionError as exc:
+            error_message = str(exc)
+            logger.error(f"Task {task_id} failed during provider execution: {error_message}")
+
+        response_ms = (time.time() * 1000) - start_ms
+
+        # Step 4: Settle escrow and task status
         completed_at = datetime.now(timezone.utc).isoformat()
+        task_status = "completed" if success else "failed"
+        escrow_status = "released" if success else "refunded"
+
         with sqlite3.connect(self.db_path) as conn:
-            conn.execute("UPDATE task_log SET status = 'completed', response_ms = ?, completed_at = ? WHERE task_id = ?",
-                         (response_ms, completed_at, task_id))
-            conn.execute("UPDATE escrow SET status = 'released' WHERE task_id = ?", (task_id,))
-            conn.execute("UPDATE miners SET total_earned = total_earned + ? WHERE miner_id = ?",
-                         (cost, miner_id))
+            conn.execute(
+                "UPDATE task_log SET status = ?, response_ms = ?, completed_at = ? WHERE task_id = ?",
+                (task_status, response_ms, completed_at, task_id),
+            )
+            conn.execute("UPDATE escrow SET status = ? WHERE task_id = ?", (escrow_status, task_id))
+            if success:
+                conn.execute(
+                    "UPDATE miners SET total_earned = total_earned + ? WHERE miner_id = ?",
+                    (cost, miner_id),
+                )
 
         # Step 5: Update trust
         self.registry.update_trust(miner_id, success, response_ms)
 
-        logger.info(f"Task {task_id} completed. Miner {miner['name']} earned ${cost}")
+        if success:
+            logger.info(f"Task {task_id} completed. Miner {miner['name']} earned ${cost}")
+        else:
+            logger.info(f"Task {task_id} failed. Escrow refunded to renter.")
 
-        return {
+        result = {
             "task_id": task_id,
             "miner": miner["name"],
             "miner_id": miner_id,
             "model": miner.get("model"),
-            "response": simulated_response,
+            "provider": provider,
             "cost": cost,
             "response_ms": round(response_ms, 2),
-            "status": "completed",
+            "status": task_status,
         }
+
+        if success:
+            result["response"] = response_text
+        else:
+            result["error"] = error_message or "Task execution failed"
+
+        return result
 
     def get_earnings(self, miner_id: str) -> Dict:
         """Get earnings for a miner."""
