@@ -26,21 +26,28 @@ Our strategy is to leverage an unlimited budget to fund the first-ever **AI-Only
 - [x] **Social Media Core**: Skills for X (Twitter), LinkedIn — `skills/social-media/brand_manager.py`
 - [x] **Communication Core**: Native IMAP/SMTP for email, Telegram, Discord, and Slack — `skills/comms/messenger.py`
 - [x] **Data & Analytics**: Jupyter-like sandbox for pandas/numpy data analysis — `skills/data_sandbox/sandbox.py`
-- [ ] **Web3 & Crypto**: Secure wallet management, transaction signing, and smart contract interaction.
+- [x] **Web3 & Crypto**: Secure wallet management, transaction signing, and smart contract interaction — `skills/web3/wallet.py`
 - [ ] **DevOps Core**: Terraform and cloud-provider (AWS/GCP/Vercel) provisioning skills.
 
 ## Phase 3: Enterprise, Security & Collaboration (6-12 Months)
 *Making the ecosystem safe for businesses to deploy.*
-- **Secure Enclaves**: Running agent skills in isolated WASM or heavily restricted Docker containers.
-- **Immutable Audit Logging**: Cryptographically signed logs of every action an agent takes.
-- **Human-in-the-loop (HITL)**: A standardized UI/CLI workflow for requesting operator approval before executing sensitive actions (e.g., spending money, sending emails).
-- **Multi-Agent Protocol**: A P2P communication standard allowing OpenPango agents to negotiate and delegate tasks to *other* agents on different machines.
+- [x] **Secure Enclaves**: Running agent skills in isolated WASM or heavily restricted Docker containers — `skills/security/enclave_runner.py`
+- [x] **Immutable Audit Logging**: Cryptographically signed logs of every action an agent takes.
+- [x] **Human-in-the-loop (HITL)**: A standardized UI/CLI workflow for requesting operator approval before executing sensitive actions.
+- [x] **Multi-Agent Protocol**: A P2P communication standard allowing OpenPango agents to negotiate and delegate tasks — `skills/a2a/`
 
 ## Phase 4: Monetization & The Skill Marketplace (Year 2+)
 *Creating a self-sustaining economy around agent capabilities.*
-- **The OpenPango Skill Registry**: A decentralized or hosted marketplace where developers can publish verified skills.
-- **Premium Hosted Daemons**: Offering managed high-availability Playwright instances or Vector DBs for enterprise agents.
-- **Agent-to-Agent Microtransactions**: Allowing agents to pay other agents for specialized tasks using crypto or fiat rails.
+- [x] **The OpenPango Skill Registry**: A decentralized marketplace where developers can publish verified skills — `skills/marketplace/`
+- [ ] **Premium Hosted Daemons**: Offering managed high-availability Playwright instances or Vector DBs for enterprise agents.
+- [x] **Agent-to-Agent Microtransactions**: Allowing agents to pay other agents using crypto or fiat rails — `skills/monetization/`
+
+## Phase 5: The Mining Economy (NEW)
+*Users contribute API keys and agents as "miners" to earn passive income.*
+- [x] **Mining Pool Core**: Agent rental marketplace with escrow payments and trust scoring — `skills/mining/mining_pool.py`
+- [ ] **Live Mining Dashboard**: Real-time web UI showing pool stats, earnings, and active miners.
+- [ ] **Multi-Provider Support**: Native support for OpenAI, Anthropic, Google, and local Ollama miners.
+- [ ] **Reputation NFTs**: On-chain trust scores that miners can carry across platforms.
 
 ---
 
