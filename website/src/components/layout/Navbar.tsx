@@ -12,6 +12,7 @@ export function Navbar() {
     { href: "/agents", label: "Agents" },
     { href: "/leaderboard", label: "Leaderboard" },
     { href: "/operator", label: "Operator" },
+    { href: "/persona-builder", label: "Persona Builder" },
     { href: "/#mining", label: "Mining" },
     { href: "/#runtime", label: "Runtime" },
     { href: "/docs", label: "Docs" },
