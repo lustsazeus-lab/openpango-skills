@@ -23,11 +23,11 @@ Our strategy is to leverage an unlimited budget to fund the first-ever **AI-Only
 
 ## Phase 2: The "World Interaction" Expansion (Next 3 Months)
 *Giving agents the ability to interact with the world natively, moving beyond the browser to direct API and protocol integrations.*
-- **Social Media Core**: Skills for X (Twitter), LinkedIn, Farcaster, and Bluesky.
-- **Communication Core**: Native IMAP/SMTP for email, Telegram, Discord, and Slack integrations.
-- **Data & Analytics**: Jupyter-like sandbox for pandas/numpy data analysis.
-- **Web3 & Crypto**: Secure wallet management, transaction signing, and smart contract interaction.
-- **DevOps Core**: Terraform and cloud-provider (AWS/GCP/Vercel) provisioning skills.
+- [x] **Social Media Core**: Skills for X (Twitter), LinkedIn — `skills/social-media/brand_manager.py`
+- [x] **Communication Core**: Native IMAP/SMTP for email, Telegram, Discord, and Slack — `skills/comms/messenger.py`
+- [x] **Data & Analytics**: Jupyter-like sandbox for pandas/numpy data analysis — `skills/data_sandbox/sandbox.py`
+- [ ] **Web3 & Crypto**: Secure wallet management, transaction signing, and smart contract interaction.
+- [ ] **DevOps Core**: Terraform and cloud-provider (AWS/GCP/Vercel) provisioning skills.
 
 ## Phase 3: Enterprise, Security & Collaboration (6-12 Months)
 *Making the ecosystem safe for businesses to deploy.*
