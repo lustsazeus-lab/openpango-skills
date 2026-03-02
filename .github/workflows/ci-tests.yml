@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  node-tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -26,10 +26,65 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run test suite
+      - name: Run Node.js test suite
         run: npm test
 
-      - name: Post test results on PR
+  python-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12', '3.13']
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run Python skill tests
+        run: |
+          echo "🧪 Running 175 tests across 11 skills..."
+          python3 -m unittest \
+            skills.comms.test_messenger \
+            skills.data_sandbox.test_sandbox \
+            skills.iot.test_home_assistant \
+            skills.marketplace.test_registry \
+            skills.mcp.test_mcp \
+            skills.memory.test_semantic \
+            skills.metrics.test_metrics \
+            skills.mining.test_mining \
+            skills.monetization.test_payment_router \
+            skills.security.test_enclave \
+            skills.web3.test_wallet \
+            -v
+
+  website-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: website
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: website/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build website
+        run: npx next build
+
+      - name: Post failure on PR
         if: failure() && github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
@@ -38,5 +93,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '❌ **Test suite failed** on Node.js ${{ matrix.node-version }}.\n\nPlease review the [Actions log](' + context.serverUrl + '/' + context.repo.owner + '/' + context.repo.repo + '/actions/runs/' + context.runId + ') and fix any failing tests before this PR can be merged.'
+              body: '❌ **CI failed**.\\n\\nPlease review the [Actions log](' + context.serverUrl + '/' + context.repo.owner + '/' + context.repo.repo + '/actions/runs/' + context.runId + ') and fix any issues.'
             });
