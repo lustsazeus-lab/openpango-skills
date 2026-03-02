@@ -1,0 +1,66 @@
+# CLI Reference
+
+The `openpango` CLI is the primary interface for managing the skill ecosystem. It handles installation, health checks, security scanning, and workspace initialization.
+
+## Installation
+
+```bash
+npm link
+```
+
+This makes the `openpango` command globally available.
+
+## Commands
+
+### `openpango init`
+
+Initializes the OpenClaw workspace at `~/.openclaw/workspace/`. Creates the required directory structure and files that all skills depend on:
+
+- `AGENTS.md` — Agent identity and instructions
+- `TOOLS.md` — Available tools reference
+- `.learnings/` — Self-improvement log directory
+
+### `openpango install <skills...>`
+
+Installs one or more skills by creating symlinks from `~/.openclaw/skills/<name>` to the local `skills/<name>` directory. Each skill must have a valid `SKILL.md` file.
+
+```bash
+openpango install browser memory orchestration figma
+```
+
+### `openpango remove <skills...>`
+
+Removes installed skill symlinks.
+
+### `openpango list`
+
+Lists all available skills (from the repo's `skills/` directory) and marks which ones are currently installed.
+
+### `openpango status`
+
+Runs a comprehensive health check with color-coded output:
+
+- **Workspace validation** — checks for required files and directories
+- **Skill integrity** — verifies symlinks and `SKILL.md` presence
+- **Skill-specific probes:**
+  - Browser: daemon process detection, `.browser_data/` state
+  - Memory: JSONL event logs, SQLite cache
+  - Orchestration: `router.py`, Python runtime
+  - Self-improvement: updater script, learnings directory
+
+### `openpango scan <skill>`
+
+Runs the built-in SAST security scanner on a skill directory. Checks for:
+
+- Hardcoded credentials and API keys
+- `eval()` usage
+- Path traversal patterns
+- Dangerous module imports (`child_process`, `net`)
+- Symlink-based escape attempts
+
+## Testing
+
+```bash
+npm test              # 20 Jest tests
+npm run test:ci       # CI-friendly mode
+```

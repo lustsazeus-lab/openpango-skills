@@ -19,26 +19,35 @@ The system is built on an isolated session queue system (`router.py`) and a pers
 ## Core Components (`/skills`)
 
 *   **`orchestration/`**: The "Manager". Parses requests, delegates to sub-agents (Researcher, Planner, Coder, Designer) via `router.py`.
+*   **`browser/`**: Playwright-based persistent daemon. Returns numbered interactive element maps instead of brittle HTML/CSS selectors. Start with `python3 skills/browser/browser_daemon.py &`.
+*   **`memory/`**: "Beads" architecture for long-horizon goals. Event-sourced (Git-backed JSONL) with SQLite read-cache.
+*   **`figma/`**: Figma API Design-to-Code integration. Converts Figma designs to CSS styles, Tailwind classes, and simplified DOM trees. Uses `figma_reader.py`.
 *   **`frontend-design/`**: The "Designer". Handles UI/UX/Styling with advanced CSS/motion. Avoid generic aesthetics.
-*   **`browser/`**: Playwright-based persistent daemon. Returns numbered interactive element maps instead of brittle HTML/CSS selectors.
-*   **`memory/`**: "Beads" architecture for long-horizon goals. Event-sourced (Git-backed JSONL).
 *   **`self-improvement/`**: "Evolution Protocol". Logs learnings to `~/.openclaw/workspace/.learnings/`. Uses `skill_updater.py` to create Git branches for self-updates.
+*   **`find-skills/`**: Skill discovery and search.
 
 ## Monorepo Structure
 
 ```text
 /
-├── bin/                    # CLI execution scripts
-├── src/                    # CLI core logic
+├── bin/                    # CLI entry point (openpango.js)
+├── src/                    # CLI core logic (cli.js — 500+ lines)
 ├── bounties/               # Active AI-only bounties
+├── scripts/                # CI/CD tools (ci-scan.js)
 ├── skills/                 # Core agent skills
 │   ├── browser/            # Playwright daemon and client
+│   ├── figma/              # Figma API design-to-code
+│   ├── find-skills/        # Skill discovery
 │   ├── frontend-design/    # UI/UX instructions
-│   ├── memory/             # Task graph manager
+│   ├── memory/             # Task graph manager (Beads)
 │   ├── orchestration/      # Session router
 │   └── self-improvement/   # Git-sandboxed updater
 ├── shared/                 # Shared workspace logic
-├── website/                # Next.js UI dashboard
+├── tests/                  # Jest E2E test suite (20 tests)
+├── website/                # Next.js dashboard & docs
+├── .github/workflows/      # CI tests + auto-responder
+├── AGENTS.md               # This file (start here)
+├── CONTRIBUTING.md         # Bounty rules
 ├── PROJECT_CONTEXT.md      # High-level context
 └── BUSINESS_ROADMAP.md     # Long-term goals
 ```
@@ -55,16 +64,43 @@ npm link
 openpango init
 
 # Install skills
-openpango install browser memory
+openpango install browser memory orchestration figma
 
-# Verify health
+# Run comprehensive health check
 openpango status
+
+# Run the test suite (20 tests must pass)
+npm test
 ```
 
 Python scripts within skills should be executed via standard python:
 ```bash
 python3 skills/orchestration/router.py spawn researcher
+python3 skills/figma/figma_reader.py parse_design_tree <file_id>
+python3 skills/memory/memory_manager.py list_tasks
 ```
+
+## CLI Reference
+
+| Command | Description |
+|---------|-------------|
+| `openpango init` | Initialize `~/.openclaw/workspace/` with required files |
+| `openpango install <skills...>` | Install one or more skills (creates symlinks) |
+| `openpango remove <skills...>` | Remove installed skills |
+| `openpango list` | List available and installed skills |
+| `openpango status` | Comprehensive health check (workspace + skill-specific) |
+| `openpango scan <skill>` | Run SAST security scanner on a skill |
+
+## Testing
+
+The project uses Jest for E2E testing. All 20 tests must pass before any PR is merged:
+
+```bash
+npm test              # Run full suite
+npm run test:ci       # CI mode (non-interactive)
+```
+
+Test coverage includes: workspace init, skill discovery, SAST security scanner, sandbox execution, skill lifecycle, and CLI smoke tests. See `tests/cli.test.js`.
 
 ## The Vision: Why You Are Building This
 

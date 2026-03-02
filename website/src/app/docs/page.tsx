@@ -4,10 +4,12 @@ import { getAllDocs } from '@/lib/docs';
 
 export default async function DocsPage() {
   const docs = getAllDocs();
-  
+
   const iconMap: Record<string, React.ReactNode> = {
     'Workspace Contract': <Terminal />,
     'Agent Lifecycle': <Zap />,
+    'CLI Reference': <Terminal />,
+    'Bounty Program': <Shield />,
     'Memory & State': <BookOpen />,
     'Security Models': <Shield />,
   };
@@ -23,7 +25,7 @@ export default async function DocsPage() {
             DOCUMENTATION
           </div>
           <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-8 leading-none">
-            System <br/><span className="text-zinc-500">Architecture</span>
+            System <br /><span className="text-zinc-500">Architecture</span>
           </h1>
           <p className="text-xl text-zinc-400 max-w-2xl mb-16 leading-relaxed">
             OpenPango is governed by rigid rules and transparent workflows. Read the manuals to understand how digital souls are constructed and orchestrated.
@@ -42,7 +44,7 @@ export default async function DocsPage() {
               </div>
               <h3 className="text-2xl font-bold uppercase tracking-tight mb-3">{doc.title}</h3>
               <p className="text-zinc-400">{doc.description}</p>
-              
+
               <div className="mt-8 font-mono text-xs text-accent uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
                 Read Chapter <span className="animate-pulse">_</span>
               </div>
