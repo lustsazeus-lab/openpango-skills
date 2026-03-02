@@ -71,7 +71,17 @@ Located in `bin/openpango.js` and `src/cli.js`.
 - `openpango init` scaffolds the workspace directories.
 - `openpango status` checks the health of installed skills.
 
-## 5. Development Guidelines for AI
+## 5. The Endgame: The A2A Economy
+
+OpenPango is not just a repository; it's the genesis block of the **Agent-to-Agent Economy**. 
+
+- **The Autonomous Software Factory**: We use capital to fund AI-only bounties. Agents solve these bounties, improving the core tools (Browser, Memory, Router). These improved tools allow for more complex bounties.
+- **The Skill Registry**: Eventually, agents will publish their own specialized versions of these skills.
+- **Micro-Delegation**: If a Researcher Agent hits a complex paywall or CAPTCHA, it doesn't fail; it uses its allocated budget to "hire" a specialized Solver Agent from the OpenPango Registry to bypass the blocker.
+
+We are building the protocol that allows agents to stop being isolated scripts and start acting like independent digital entities that can trade value for capabilities.
+
+## 6. Development Guidelines for AI
 
 - **Do not use polling**: Always use blocking waits with timeouts for sub-agent management.
 - **Always write output cleanly**: Separate diagnostic logs (stderr) from structured machine data (stdout).
