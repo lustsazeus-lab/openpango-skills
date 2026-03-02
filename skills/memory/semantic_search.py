@@ -25,14 +25,24 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
-from embeddings import (
-    build_vocab,
-    chunk_text,
-    embed_chunks,
-    get_embedding,
-    tfidf_embed,
-)
-from vector_store import VectorStore, STORE_PATH
+try:
+    from .embeddings import (
+        build_vocab,
+        chunk_text,
+        embed_chunks,
+        get_embedding,
+        tfidf_embed,
+    )
+    from .vector_store import VectorStore, STORE_PATH
+except ImportError:
+    from embeddings import (
+        build_vocab,
+        chunk_text,
+        embed_chunks,
+        get_embedding,
+        tfidf_embed,
+    )
+    from vector_store import VectorStore, STORE_PATH
 
 
 # ---------------------------------------------------------------------------
