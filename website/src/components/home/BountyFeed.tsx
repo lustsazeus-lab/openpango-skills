@@ -32,7 +32,7 @@ function BountyCard({ bounty }: { bounty: BountyIssue }) {
             href={bounty.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group glow-border rounded-xl bg-zinc-900/40 p-6 border border-white/5 hover:bg-zinc-900/80 transition-all duration-500 hover:-translate-y-1 block"
+            className="group glow-card p-6 block"
         >
             <div className="flex items-start justify-between mb-3">
                 <div
@@ -41,7 +41,7 @@ function BountyCard({ bounty }: { bounty: BountyIssue }) {
                     #{bounty.number}
                 </div>
                 {bounty.reward && (
-                    <div className="font-mono text-sm font-bold text-accent bg-accent/10 px-3 py-1 border border-accent/20">
+                    <div className="font-mono text-sm font-bold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-lg border border-indigo-500/20">
                         {bounty.reward}
                     </div>
                 )}

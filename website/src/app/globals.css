@@ -1,15 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  --color-accent: #ff3e00;
-  --color-accent-hover: #ff5e2e;
-  --font-sans: var(--font-syne), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --color-accent: #6366f1;
+  --color-accent-hover: #818cf8;
+  --color-accent-glow: rgba(99, 102, 241, 0.15);
+  --color-gold: #f59e0b;
+  --color-gold-glow: rgba(245, 158, 11, 0.12);
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 :root {
-  --background: #000000;
-  --foreground: #fafafa;
+  --background: #050505;
+  --foreground: #e4e4e7;
 }
 
 body {
@@ -17,38 +20,91 @@ body {
   color: var(--foreground);
 }
 
-.noise-overlay {
+/* ═══════ MESH GRADIENT BACKGROUND ═══════ */
+.mesh-gradient {
   position: fixed;
-  top: 0; left: 0; width: 100vw; height: 100vh;
+  inset: 0;
   pointer-events: none;
-  z-index: 9999;
-  opacity: 0.04;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  z-index: -2;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 20%, rgba(99, 102, 241, 0.06), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(168, 85, 247, 0.04), transparent),
+    radial-gradient(ellipse 50% 50% at 50% 100%, rgba(245, 158, 11, 0.03), transparent);
 }
 
-.grid-bg {
+/* ═══════ SUBTLE DOT GRID ═══════ */
+.dot-grid {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: -1;
-  background-size: 40px 40px;
-  background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
-  mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
 }
 
-.glow-border {
+/* ═══════ GLOW CARD ═══════ */
+.glow-card {
   position: relative;
+  background: rgba(24, 24, 27, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.glow-border::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(to bottom, rgba(255, 62, 0, 0.4), transparent);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
+.glow-card:hover {
+  border-color: rgba(99, 102, 241, 0.25);
+  box-shadow: 0 0 40px rgba(99, 102, 241, 0.08), inset 0 1px 0 rgba(255,255,255,0.06);
+  transform: translateY(-4px);
 }
+
+/* ═══════ GOLD GLOW CARD ═══════ */
+.glow-card-gold {
+  position: relative;
+  background: rgba(24, 24, 27, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(245, 158, 11, 0.08);
+  border-radius: 16px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.glow-card-gold:hover {
+  border-color: rgba(245, 158, 11, 0.3);
+  box-shadow: 0 0 40px rgba(245, 158, 11, 0.08), inset 0 1px 0 rgba(255,255,255,0.06);
+  transform: translateY(-4px);
+}
+
+/* ═══════ GRADIENT TEXT ═══════ */
+.gradient-text {
+  background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.gradient-text-gold {
+  background: linear-gradient(135deg, #f59e0b 0%, #f97316 50%, #ef4444 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════ ANIMATED ORB ═══════ */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-12px) rotate(3deg); }
+  66% { transform: translateY(8px) rotate(-2deg); }
+}
+.float-orb {
+  animation: float 8s ease-in-out infinite;
+}
+
+/* ═══════ SECTION DIVIDER ═══════ */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.2), transparent);
+}
+
+/* ═══════ SCROLLBAR ═══════ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(99, 102, 241, 0.5); }

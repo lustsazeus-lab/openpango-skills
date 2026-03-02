@@ -41,10 +41,10 @@ export async function EcosystemStats() {
             {items.map((item) => (
                 <div
                     key={item.label}
-                    className="text-center p-6 border border-white/5 bg-zinc-900/30 rounded-lg hover:border-accent/20 transition-colors"
+                    className="text-center p-6 glow-card"
                 >
                     <div
-                        className={`text-3xl md:text-4xl font-black tracking-tight ${item.accent ? "text-accent" : "text-white"}`}
+                        className={`text-3xl md:text-4xl font-bold tracking-tight ${item.accent ? "text-indigo-400" : "text-white"}`}
                     >
                         {item.value}
                     </div>

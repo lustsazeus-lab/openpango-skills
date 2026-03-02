@@ -8,51 +8,42 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   href?: string;
 }
 
-export function Button({ 
-  className, 
-  variant = "primary", 
-  size = "md", 
+export function Button({
+  className,
+  variant = "primary",
+  size = "md",
   children,
   href,
-  ...props 
+  ...props
 }: ButtonProps) {
-  const baseStyles = "relative font-mono uppercase text-sm font-bold tracking-wider transition-all inline-flex items-center justify-center gap-3 overflow-hidden group";
-  
+  const baseStyles = "relative font-medium text-sm transition-all inline-flex items-center justify-center gap-2 rounded-xl";
+
   const variants = {
-    primary: "bg-accent text-white shadow-[4px_4px_0_rgba(255,255,255,0.15)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0_rgba(255,62,0,0.4)] hover:bg-accent-hover",
-    secondary: "bg-white text-black shadow-[4px_4px_0_rgba(255,62,0,0.5)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0_rgba(255,62,0,0.8)]",
-    outline: "border-2 border-white/20 hover:border-accent hover:text-accent hover:bg-accent/5",
-    ghost: "hover:bg-white/5 text-zinc-400 hover:text-white"
+    primary: "bg-indigo-500 text-white hover:bg-indigo-400 shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30",
+    secondary: "bg-white text-zinc-900 hover:bg-zinc-100 shadow-lg",
+    outline: "border border-white/10 text-zinc-300 hover:border-indigo-500/40 hover:text-white hover:bg-white/[0.03]",
+    ghost: "text-zinc-400 hover:text-white hover:bg-white/[0.04]"
   };
 
   const sizes = {
     sm: "px-4 py-2 text-xs",
-    md: "px-8 py-4",
-    lg: "px-10 py-5 text-base",
+    md: "px-6 py-3",
+    lg: "px-8 py-3.5",
   };
-
-  const innerContent = (
-    <>
-      <span className="relative z-10 flex items-center gap-2">{children}</span>
-      {variant === "primary" && (
-        <div className="absolute inset-0 h-full w-full translate-y-[100%] bg-white/20 transition-transform duration-300 ease-out group-hover:translate-y-[0%]" />
-      )}
-    </>
-  );
 
   const finalClassName = cn(baseStyles, variants[variant], sizes[size], className);
 
   if (href) {
     return (
       <Link href={href} className={finalClassName}>
-        {innerContent}
+        {children}
       </Link>
     );
   }
 
   return (
     <button className={finalClassName} {...props}>
-      {innerContent}
+      {children}
     </button>
   );
 }

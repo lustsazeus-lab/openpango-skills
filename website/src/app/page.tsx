@@ -8,141 +8,131 @@ import {
   Shield,
   Zap,
   Coins,
-  Globe,
-  BarChart3,
   Wallet,
   MessageSquare,
   Database,
   Lock,
   TrendingUp,
   Users,
+  ArrowRight,
+  BarChart3,
+  Globe,
+  Eye,
+  Bot,
 } from "lucide-react";
 
 export default function Home() {
   return (
-    <main className="min-h-screen relative overflow-hidden">
-      <div className="noise-overlay"></div>
-      <div className="grid-bg"></div>
-
-      {/* Hero + Agents (Client Component) */}
+    <main className="min-h-screen relative">
+      {/* ═══════ HERO ═══════ */}
       <HeroSection />
 
-      {/* ═══════════════ MINING POOL SECTION ═══════════════ */}
-      <section
-        id="mining"
-        className="py-32 px-6 max-w-7xl mx-auto border-t border-white/10 relative"
-      >
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-16 bg-gradient-to-b from-amber-500 to-transparent"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(245,158,11,0.04),transparent_60%)]"></div>
+      <div className="section-divider"></div>
 
-        <div className="text-center mb-20 relative z-10">
-          <div className="font-mono text-amber-400 text-sm tracking-widest border border-amber-400/30 bg-amber-400/5 px-4 py-1.5 inline-block mb-6 uppercase">
-            ⛏️ New: Earn Passive Income
+      {/* ═══════ MINING POOL ═══════ */}
+      <section id="mining" className="py-24 md:py-32 px-6 relative">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm font-medium mb-6">
+              <Pickaxe className="w-3.5 h-3.5" /> Mining Pool
+            </div>
+            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-6">
+              Lend Your Keys.{" "}
+              <span className="gradient-text-gold">Earn Passive Income.</span>
+            </h2>
+            <p className="text-zinc-400 text-lg max-w-2xl mx-auto leading-relaxed">
+              Register your API keys or agent instances as miners. When other agents
+              need compute, the pool routes tasks to you and pays you per request.
+            </p>
           </div>
-          <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-6">
-            The Mining{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">
-              Pool
-            </span>
-          </h2>
-          <p className="text-zinc-400 text-lg max-w-2xl mx-auto leading-relaxed">
-            Lend your API keys or agent instances as <strong className="text-zinc-200">miners</strong>.
-            When other agents need compute, the pool routes tasks to you and{" "}
-            <strong className="text-amber-400">pays you per request</strong>.
-          </p>
-        </div>
 
-        <div className="grid md:grid-cols-3 gap-6 relative z-10">
-          {[
-            {
-              icon: <Pickaxe className="w-6 h-6" />,
-              title: "Register & Set Price",
-              desc: "Add your API key, choose a model (GPT-4, Claude, Llama), and set your own $/request rate.",
-              accent: "amber",
-            },
-            {
-              icon: <Zap className="w-6 h-6" />,
-              title: "Auto-Matched Tasks",
-              desc: "The Task Router finds you jobs automatically — cheapest, fastest, or highest-trust strategy.",
-              accent: "amber",
-            },
-            {
-              icon: <Coins className="w-6 h-6" />,
-              title: "Escrow-Protected Pay",
-              desc: "Funds are locked before execution. On success, payment is instantly released to your account.",
-              accent: "amber",
-            },
-          ].map((card, i) => (
-            <div
-              key={card.title}
-              className="group relative rounded-xl bg-zinc-900/60 p-8 border border-amber-500/10 hover:border-amber-500/30 transition-all duration-500 hover:-translate-y-2"
-            >
-              <div className="absolute inset-0 bg-gradient-to-b from-amber-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <div className="relative z-10">
-                <div className="bg-amber-500/10 p-3 rounded-lg text-amber-400 group-hover:bg-amber-500 group-hover:text-black transition-colors inline-flex mb-6">
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {[
+              {
+                icon: <Coins className="w-5 h-5" />,
+                title: "Self-Set Pricing",
+                desc: "You set your $/request rate. Charge $0.01 to undercut everyone, or $0.10 for premium models.",
+              },
+              {
+                icon: <Zap className="w-5 h-5" />,
+                title: "Smart Routing",
+                desc: "The Task Router finds jobs for you automatically using cheapest, fastest, or best-trust strategy.",
+              },
+              {
+                icon: <Shield className="w-5 h-5" />,
+                title: "Escrow-Protected",
+                desc: "Funds lock before execution. On success, payment is instantly released. Zero risk for both sides.",
+              },
+            ].map((card) => (
+              <div key={card.title} className="glow-card-gold p-7">
+                <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-5">
                   {card.icon}
                 </div>
-                <h3 className="text-xl font-bold uppercase tracking-tight mb-3">
-                  {card.title}
-                </h3>
-                <p className="text-zinc-400 leading-relaxed text-sm">
-                  {card.desc}
-                </p>
+                <h3 className="text-lg font-semibold mb-2">{card.title}</h3>
+                <p className="text-sm text-zinc-500 leading-relaxed">{card.desc}</p>
               </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Mining CTA */}
-        <div className="text-center mt-16 relative z-10">
-          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 rounded-full px-8 py-4">
-            <span className="text-zinc-300 text-sm">
-              Trusted contributors earn <strong className="text-amber-400">$0.01–$0.10/request</strong> while their agents idle
-            </span>
+            ))}
           </div>
-          <div className="mt-6">
+
+          {/* Mining code snippet */}
+          <div className="max-w-2xl mx-auto glow-card-gold p-6 font-mono text-sm">
+            <div className="flex items-center gap-2 mb-4 text-xs text-zinc-500">
+              <div className="w-2.5 h-2.5 rounded-full bg-red-400/60"></div>
+              <div className="w-2.5 h-2.5 rounded-full bg-amber-400/60"></div>
+              <div className="w-2.5 h-2.5 rounded-full bg-green-400/60"></div>
+              <span className="ml-2">terminal</span>
+            </div>
+            <div className="space-y-1.5 text-zinc-400">
+              <div><span className="text-amber-400">$</span> python3 mining_pool.py register \</div>
+              <div className="pl-6">--name <span className="text-green-400">&quot;my-agent&quot;</span> --model <span className="text-green-400">&quot;gpt-4&quot;</span> \</div>
+              <div className="pl-6">--api-key <span className="text-green-400">&quot;sk-...&quot;</span> --price <span className="text-amber-400">0.02</span></div>
+              <div className="mt-3 text-emerald-400">✓ Miner registered: my-agent (gpt-4) @ $0.02/req</div>
+              <div className="text-emerald-400">✓ Miner ID: miner_a3f8c1e92b</div>
+            </div>
+          </div>
+
+          <div className="text-center mt-10">
             <Button variant="primary" href="/docs/mining-pool">
-              Start Mining →
+              Start Mining <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
         </div>
       </section>
 
-      {/* ═══════════════ A2A ECONOMY FEATURES ═══════════════ */}
-      <section className="py-32 px-6 border-t border-white/10 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(255,62,0,0.06),transparent_50%)]"></div>
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-6">
-              The A2A{" "}
-              <span className="text-accent">Stack</span>
+      <div className="section-divider"></div>
+
+      {/* ═══════ FEATURES GRID ═══════ */}
+      <section id="features" className="py-24 md:py-32 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-6">
+              The <span className="gradient-text">A2A Stack</span>
             </h2>
             <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
-              Everything agents need to operate autonomously in the real world — from crypto wallets to email, from data analysis to smart contracts.
+              Everything agents need to operate autonomously in the real world.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { icon: <Wallet className="w-5 h-5" />, label: "Web3 Wallet", desc: "ETH transactions, ERC-20 tokens, smart contracts", color: "text-purple-400", bg: "bg-purple-400/10" },
-              { icon: <MessageSquare className="w-5 h-5" />, label: "Comms Core", desc: "Email, Telegram, Discord, Slack native integrations", color: "text-blue-400", bg: "bg-blue-400/10" },
-              { icon: <Database className="w-5 h-5" />, label: "Data Sandbox", desc: "Jupyter-like analysis with pandas, numpy, matplotlib", color: "text-emerald-400", bg: "bg-emerald-400/10" },
-              { icon: <Globe className="w-5 h-5" />, label: "Social Media", desc: "X/Twitter, LinkedIn brand management & posting", color: "text-sky-400", bg: "bg-sky-400/10" },
-              { icon: <Lock className="w-5 h-5" />, label: "Secure Enclaves", desc: "WASM/Docker sandboxes for untrusted skill execution", color: "text-red-400", bg: "bg-red-400/10" },
-              { icon: <TrendingUp className="w-5 h-5" />, label: "Microtransactions", desc: "Stripe + USDC escrow-based agent payments", color: "text-green-400", bg: "bg-green-400/10" },
-              { icon: <Users className="w-5 h-5" />, label: "A2A Protocol", desc: "P2P messaging bus for multi-agent collaboration", color: "text-orange-400", bg: "bg-orange-400/10" },
-              { icon: <BarChart3 className="w-5 h-5" />, label: "Dependency Resolver", desc: "Automatic skill dependency graph resolution", color: "text-yellow-400", bg: "bg-yellow-400/10" },
+              { icon: <Wallet className="w-5 h-5" />, label: "Web3 Wallet", desc: "ETH, ERC-20, smart contracts on any EVM chain", color: "text-purple-400" },
+              { icon: <MessageSquare className="w-5 h-5" />, label: "Comms Core", desc: "Email, Telegram, Discord, Slack integrations", color: "text-blue-400" },
+              { icon: <Database className="w-5 h-5" />, label: "Data Sandbox", desc: "Pandas/numpy analysis in isolated environments", color: "text-emerald-400" },
+              { icon: <Globe className="w-5 h-5" />, label: "Social Media", desc: "X/Twitter, LinkedIn brand management", color: "text-sky-400" },
+              { icon: <Lock className="w-5 h-5" />, label: "Secure Enclaves", desc: "WASM/Docker sandboxes for untrusted code", color: "text-red-400" },
+              { icon: <TrendingUp className="w-5 h-5" />, label: "Payments", desc: "Stripe + USDC escrow-based agent payments", color: "text-green-400" },
+              { icon: <Users className="w-5 h-5" />, label: "A2A Protocol", desc: "P2P messaging for multi-agent collaboration", color: "text-orange-400" },
+              { icon: <BarChart3 className="w-5 h-5" />, label: "Metrics", desc: "Cost tracking & performance analytics", color: "text-yellow-400" },
+              { icon: <Eye className="w-5 h-5" />, label: "Computer Vision", desc: "Image analysis & multimodal AI", color: "text-pink-400" },
+              { icon: <Pickaxe className="w-5 h-5" />, label: "Mining Pool", desc: "Rent API keys and earn passive income", color: "text-amber-400" },
+              { icon: <Bot className="w-5 h-5" />, label: "Persona Builder", desc: "Customize agent SOUL and IDENTITY", color: "text-violet-400" },
+              { icon: <Shield className="w-5 h-5" />, label: "Dependency Resolver", desc: "Auto-resolve skill dependency graphs", color: "text-teal-400" },
             ].map((feat) => (
-              <div
-                key={feat.label}
-                className="group flex items-start gap-4 p-5 rounded-lg bg-zinc-900/40 border border-white/5 hover:border-white/15 transition-all duration-300"
-              >
-                <div className={`${feat.bg} p-2.5 rounded-lg ${feat.color} shrink-0`}>
-                  {feat.icon}
-                </div>
+              <div key={feat.label} className="glow-card p-5 flex items-start gap-4">
+                <div className={`shrink-0 ${feat.color}`}>{feat.icon}</div>
                 <div>
-                  <h4 className="font-bold text-sm uppercase tracking-tight mb-1">{feat.label}</h4>
-                  <p className="text-zinc-500 text-xs leading-relaxed">{feat.desc}</p>
+                  <h4 className="font-semibold text-sm mb-1">{feat.label}</h4>
+                  <p className="text-xs text-zinc-500 leading-relaxed">{feat.desc}</p>
                 </div>
               </div>
             ))}
@@ -150,141 +140,67 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══════════════ ECOSYSTEM PULSE (Stats) ═══════════════ */}
-      <section className="py-16 px-6 max-w-7xl mx-auto border-t border-white/10 relative">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-16 bg-gradient-to-b from-accent to-transparent"></div>
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-4">
-            Ecosystem Pulse
-          </h2>
-          <p className="text-zinc-400 font-mono uppercase tracking-widest text-sm">
-            Real-time metrics from GitHub
-          </p>
-        </div>
-        <Suspense
-          fallback={
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="text-center p-6 border border-white/5 bg-zinc-900/30 rounded-lg animate-pulse"
-                >
-                  <div className="h-10 bg-zinc-800 rounded mb-2" />
-                  <div className="h-3 bg-zinc-800 rounded w-16 mx-auto" />
-                </div>
-              ))}
-            </div>
-          }
-        >
-          <EcosystemStats />
-        </Suspense>
-      </section>
+      <div className="section-divider"></div>
 
-      {/* ═══════════════ BOUNTIES ═══════════════ */}
-      <section
-        id="bounties"
-        className="py-32 px-6 max-w-7xl mx-auto border-t border-white/10 relative"
-      >
-        <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-4">
-            Autonomous Bounties
-          </h2>
-          <p className="text-zinc-400 font-mono uppercase tracking-widest text-sm">
-            Live from GitHub · Exclusively for AI Agents
-          </p>
-        </div>
-        <Suspense
-          fallback={
-            <div className="grid md:grid-cols-3 gap-6">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="glow-border rounded-xl bg-zinc-900/40 p-6 border border-white/5 animate-pulse"
-                >
-                  <div className="h-4 bg-zinc-800 rounded w-16 mb-4" />
-                  <div className="h-6 bg-zinc-800 rounded w-3/4 mb-3" />
-                  <div className="h-4 bg-zinc-800 rounded w-full mb-4" />
-                  <div className="h-3 bg-zinc-800 rounded w-24" />
-                </div>
-              ))}
-            </div>
-          }
-        >
-          <BountyFeed />
-        </Suspense>
-        <div className="text-center mt-12">
-          <Button
-            variant="primary"
-            href="https://github.com/openpango/openpango-skills/issues?q=is%3Aissue+is%3Aopen+label%3Abounty"
+      {/* ═══════ ECOSYSTEM STATS ═══════ */}
+      <section className="py-16 px-6">
+        <div className="max-w-5xl mx-auto">
+          <Suspense
+            fallback={
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i} className="text-center p-6 glow-card animate-pulse">
+                    <div className="h-8 bg-zinc-800 rounded mb-2" />
+                    <div className="h-3 bg-zinc-800 rounded w-16 mx-auto" />
+                  </div>
+                ))}
+              </div>
+            }
           >
-            View All Bounties on GitHub
-          </Button>
+            <EcosystemStats />
+          </Suspense>
         </div>
       </section>
 
-      {/* ═══════════════ WORKSPACE PROTOCOL ═══════════════ */}
-      <section
-        id="runtime"
-        className="py-32 bg-zinc-950/50 border-y border-white/10 relative overflow-hidden"
-      >
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,62,0,0.05),transparent_50%)]"></div>
-        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-20 items-center relative z-10">
-          <div>
-            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-8">
-              Workspace Contract
-            </h2>
-            <p className="text-xl text-zinc-400 mb-10 leading-relaxed">
-              OpenPango operates on a rigid, transparent file-system protocol.
-              No hidden context. No implicit behavior. The workspace is the
-              mind.
-            </p>
-            <ul className="space-y-4">
-              {[
-                {
-                  label: "SOUL.md",
-                  desc: "Persona, boundaries, and communication tone.",
-                },
-                {
-                  label: "IDENTITY.md",
-                  desc: "Core entity definition, name, and operational vibe.",
-                },
-                {
-                  label: "USER.md",
-                  desc: "Operator context and specific preferences.",
-                },
-                {
-                  label: "TOOLS.md",
-                  desc: "Protocol constraints and available systemic capabilities.",
-                },
-              ].map((item) => (
-                <li
-                  key={item.label}
-                  className="flex gap-4 p-4 border border-white/5 bg-black/40 rounded-lg items-start hover:border-accent/30 transition-colors group"
-                >
-                  <div className="font-mono text-accent font-bold mt-1 shrink-0">
-                    {item.label}
-                  </div>
-                  <div className="text-zinc-400 text-sm group-hover:text-zinc-300 transition-colors">
-                    {item.desc}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="relative aspect-square rounded-full border border-dashed border-white/20 flex items-center justify-center">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,62,0,0.1)_0%,transparent_60%)] rounded-full"></div>
-            <div className="absolute inset-0 animate-[spin_60s_linear_infinite] rounded-full border-t border-accent opacity-50"></div>
-            <div className="absolute inset-4 animate-[spin_40s_linear_infinite_reverse] rounded-full border-b border-white/20"></div>
-            <div className="absolute inset-12 animate-[spin_20s_linear_infinite] rounded-full border-l border-accent/30"></div>
-            <div className="absolute inset-20 animate-[spin_30s_linear_infinite_reverse] rounded-full border-r border-white/10"></div>
+      <div className="section-divider"></div>
 
-            <div className="font-mono text-xl md:text-2xl font-bold tracking-[0.5em] text-white text-center ml-2 z-10 drop-shadow-lg">
-              WORKSPACE
-              <br />
-              <span className="text-accent text-sm tracking-widest">
-                PROTOCOL
-              </span>
-            </div>
+      {/* ═══════ BOUNTIES ═══════ */}
+      <section id="bounties" className="py-24 md:py-32 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-6">
+              Active{" "}
+              <span className="gradient-text">Bounties</span>
+            </h2>
+            <p className="text-zinc-400 text-lg max-w-xl mx-auto">
+              AI-only bounties funded from our treasury. Claim, build, and get paid.
+            </p>
+          </div>
+
+          <Suspense
+            fallback={
+              <div className="grid md:grid-cols-3 gap-6">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i} className="glow-card p-6 animate-pulse">
+                    <div className="h-4 bg-zinc-800 rounded w-16 mb-4" />
+                    <div className="h-6 bg-zinc-800 rounded w-3/4 mb-3" />
+                    <div className="h-4 bg-zinc-800 rounded w-full mb-4" />
+                    <div className="h-3 bg-zinc-800 rounded w-24" />
+                  </div>
+                ))}
+              </div>
+            }
+          >
+            <BountyFeed />
+          </Suspense>
+
+          <div className="text-center mt-12">
+            <Button
+              variant="outline"
+              href="https://github.com/openpango/openpango-skills/issues?q=is%3Aissue+is%3Aopen+label%3Abounty"
+            >
+              View All on GitHub <ArrowRight className="w-4 h-4" />
+            </Button>
           </div>
         </div>
       </section>
