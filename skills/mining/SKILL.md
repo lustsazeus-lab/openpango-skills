@@ -64,6 +64,39 @@ print(result["response"])
 print(f"Cost: ${result['cost']}")
 ```
 
+## CLI Dashboard
+
+A rich terminal dashboard using Textual is available:
+
+```bash
+python -m skills.mining.cli_dashboard
+```
+
+### Features
+
+- **Miner Status Panel**: Shows all registered miners with status (active/inactive)
+- **Task Queue Panel**: Displays pending and running tasks
+- **Earnings Panel**: Shows earnings over time
+- **System Health Panel**: CPU, memory, network status
+
+### Keyboard Shortcuts
+
+| Key | Action |
+|-----|--------|
+| `q` | Quit |
+| `r` | Refresh data |
+| `m` | Miner detail view |
+| `t` | Submit test task |
+| `1-4` | Switch panels |
+
+### SSH Usage
+
+Works over SSH with no browser required. Use `-h` for help:
+
+```bash
+python -m skills.mining.cli_dashboard --help
+```
+
 ## Environment Variables
 
 | Variable                  | Description                              |
