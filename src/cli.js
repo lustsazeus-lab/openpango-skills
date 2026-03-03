@@ -494,6 +494,7 @@ const run = async () => {
       listSkills();
       break;
     case 'status':
+    case 'health':
       status();
       break;
     default:
@@ -503,16 +504,19 @@ const run = async () => {
       console.log('  openpango remove  [skill...]   Remove installed skills');
       console.log('  openpango list                 List available skills');
       console.log('  openpango status               Show status of installed skills');
+      console.log('  openpango health               Health check (alias for status)');
       console.log('\nFlags:');
       console.log('  --force                        Override security scan failures (use with caution)');
       break;
   }
 };
 
-run().catch(err => {
-  console.error('Fatal error:', err.message);
-  process.exit(1);
-});
+if (require.main === module) {
+  run().catch(err => {
+    console.error('Fatal error:', err.message);
+    process.exit(1);
+  });
+}
 
 
 /**

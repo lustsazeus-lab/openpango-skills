@@ -1,5 +1,5 @@
 """IoT skill package for OpenPango."""
 
-from .home_assistant import HomeAssistantManager, HomeAssistantConfig
+from .home_assistant import HomeAssistantClient, HomeAssistantError
 
-__all__ = ["HomeAssistantManager", "HomeAssistantConfig"]
+__all__ = ["HomeAssistantClient", "HomeAssistantError"]
