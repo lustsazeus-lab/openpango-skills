@@ -71,3 +71,33 @@ print(f"Cost: ${result['cost']}")
 |--------------------------|------------------------------------------|
 | `MINING_POOL_DB`         | Path to the pool database (default: SQLite) |
 | `MINING_ENCRYPTION_KEY`  | Fernet key for encrypting stored API keys |
+
+## CLI Dashboard
+
+A rich terminal UI dashboard for monitoring the mining pool.
+
+### Usage
+
+```bash
+# Install textual first
+pip install textual
+
+# Run the dashboard
+python skills/mining/cli_dashboard.py
+```
+
+### Keyboard Shortcuts
+
+| Key | Action |
+|-----|--------|
+| `q` | Quit |
+| `r` | Refresh data |
+| `m` | View miner details |
+| `t` | Submit test task |
+
+### Panels
+
+- **Miner Status**: Active miners with trust scores and earnings
+- **Task Queue**: Recent tasks with status indicators
+- **Earnings**: Total earnings and 7-day chart
+- **System Health**: Overall pool health metrics
