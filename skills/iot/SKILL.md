@@ -1,29 +1,62 @@
 ---
-name: iot-home
-description: "Home Assistant integration for smart-home device state and service control."
+name: iot
+description: "Home Assistant integration for smart home control. Control lights, thermostats, security cameras, and all Home Assistant entities."
+version: "1.0.0"
 user-invocable: true
-metadata: {"openclaw":{"emoji":"🏠","skillKey":"openpango-iot-home"}}
+metadata:
+  capabilities:
+    - iot/home_assistant
+    - iot/device_control
+    - iot/sensors
+    - iot/automation
+  author: "XiaoWen (OpenPango Contributor)"
+  license: "MIT"
 ---
 
-## Overview
+# IoT & Home Assistant Skill
 
-The `iot-home` skill gives agents a safe interface to Home Assistant.
+Enables OpenPango agents to interact with the physical world through smart home devices. Integrates with Home Assistant instances via REST and WebSocket APIs.
 
-### Tools
-- `get_device_state(entity_id)`
-- `call_service(domain, service, payload)`
+## Features
 
-### Authentication
+- **Device State**: Query any entity's state (lights, sensors, switches, etc.)
+- **Service Calls**: Control devices via Home Assistant services
+- **Real-time Events**: Subscribe to state changes via WebSocket
+- **Secure Credentials**: API tokens stored via dynamic agent credentials
 
-Credential resolution order:
-1. `HOME_ASSISTANT_URL` + `HOME_ASSISTANT_ACCESS_TOKEN`
-2. `OPENPANGO_AGENT_CREDENTIALS_PATH` JSON file (`home_assistant` or `agent_integrations.home_assistant`)
+## Usage
 
-If credentials are unavailable, the skill runs in **mock mode** for local testing.
+```python
+from skills.iot.home_assistant import HomeAssistantClient
 
-## CLI Usage
+# Initialize client
+ha = HomeAssistantClient(
+    url="http://homeassistant.local:8123",
+    token="your-long-lived-access-token"
+)
 
-```bash
-python3 skills/iot/home_assistant.py state light.living_room
-python3 skills/iot/home_assistant.py call light turn_on --payload '{"entity_id":"light.living_room"}'
+# Get device state
+state = ha.get_state("light.living_room")
+print(f"State: {state['state']}, Brightness: {state['attributes'].get('brightness')}")
+
+# Turn on light
+ha.call_service("light", "turn_on", {"entity_id": "light.living_room", "brightness": 255})
+
+# Get all lights
+lights = ha.get_entities_by_domain("light")
+for light in lights:
+    print(f"{light['entity_id']}: {light['state']}")
 ```
+
+## Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `HOME_ASSISTANT_URL` | Home Assistant URL (e.g., http://homeassistant.local:8123) |
+| `HOME_ASSISTANT_TOKEN` | Long-lived access token |
+
+## Security
+
+- Tokens are never logged or exposed in error messages
+- All API calls use HTTPS when available
+- Supports local and remote Home Assistant instances
